@@ -15,7 +15,9 @@ pipeline {
         }
         stage('compile'){
             steps {
-                './mvnw -B clean compile'
+                 echo '>>> Step 2: Compiling Java code with Maven...'
+                 sh './mvnw -B clean compile'
+                 echo '>>> Compile finished ✅'
             }
         }
 
