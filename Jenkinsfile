@@ -20,6 +20,18 @@ pipeline {
                  echo '>>> Compile finished ✅'
             }
         }
+        stage('test'){
+            steps {
+                 echo '>>> Step 3: Running unit tests with Maven...'
+                 sh './mvnw -B test'
+                 echo '>>> Test finished ✅'
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+                }
+            }
+        }
 
     }
 }
