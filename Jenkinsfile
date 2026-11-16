@@ -10,6 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                echo '>>> Step 1: Getting code from GitHub...'
                 checkout scm
                 echo '>>> Checkout finished ✅'
             }
@@ -32,18 +33,25 @@ pipeline {
                     junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
                 }
             }
-            stage ('SonarQube Analysis') {
-                steps {
+        }
+        stage ('SonarQube Analysis') {
+            steps {
                 echo '>>> Step 4: Sending code to SonarCloud for quality check...'
                 withSonarQubeEnv('sonarcloud') {
                     sh '''./mvnw -B sonar:sonar \
                         -Dsonar.organization=alfi-teachs \
                         -Dsonar.projectKey=alfi-teachs_spring-petclinic-microservices'''
                 }
-                    echo '>>> SonarQube analysis finished ✅'
-                }
+                echo '>>> SonarQube analysis finished ✅'
             }
         }
-
+        stage('Package') {
+            steps {
+                echo '>>> Step 5:  Packaging apps into .jar files...'
+                sh './mvnw -B package -DskipTests'
+                sh 'ls -lh spring-petclinic-*/target/*.jar'
+                echo '>>> Package finished ✅'
+            }
+        }
     }
 }
