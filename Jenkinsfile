@@ -31,15 +31,14 @@ pipeline {
                     junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
                 }
             }
-            stage ("sonarqube analysis") {
+            stage ('SonarQube Analysis') {
                 steps {
-                    echo '>>> Step 4: Sending code to SonarCloud for quality check...'
-                    withSonarQubeEnv('sonarcloud') {
-                        sh './mvnw -B sonar:sonar'\
-                            + ' -Dsonar.projectKey=alfi-teachs_spring-petclinic-microservices'\
-                            + ' -Dsonar.organization=alfi-teachs'\
-                            + '
-                    }
+                echo '>>> Step 4: Sending code to SonarCloud for quality check...'
+                withSonarQubeEnv('sonarcloud') {
+                    sh '''./mvnw -B sonar:sonar \
+                        -Dsonar.organization=alfi-teachs \
+                        -Dsonar.projectKey=alfi-teachs_spring-petclinic-microservices'''
+                }
                     echo '>>> SonarQube analysis finished ✅'
                 }
             }
