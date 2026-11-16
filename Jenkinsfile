@@ -38,7 +38,7 @@ pipeline {
             steps {
                 echo '>>> Step 4: Sending code to SonarCloud for quality check...'
                 withSonarQubeEnv('sonarcloud') {
-                    sh '''./mvnw -B sonar:sonar \
+                    sh '''./mvnw -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
                         -Dsonar.organization=alfi-teachs \
                         -Dsonar.projectKey=alfi-teachs_spring-petclinic-microservices'''
                 }
