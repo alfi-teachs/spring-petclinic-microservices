@@ -31,6 +31,18 @@ pipeline {
                     junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
                 }
             }
+            stage ("sonarqube analysis") {
+                steps {
+                    echo '>>> Step 4: Sending code to SonarCloud for quality check...'
+                    withSonarQubeEnv('sonarcloud') {
+                        sh './mvnw -B sonar:sonar'\
+                            + ' -Dsonar.projectKey=alfi-teachs_spring-petclinic-microservices'\
+                            + ' -Dsonar.organization=alfi-teachs'\
+                            + '
+                    }
+                    echo '>>> SonarQube analysis finished ✅'
+                }
+            }
         }
 
     }
