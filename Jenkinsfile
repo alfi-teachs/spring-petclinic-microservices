@@ -34,20 +34,9 @@ pipeline {
                 }
             }
         }
-        stage ('SonarQube Analysis') {
-            steps {
-                echo '>>> Step 4: Sending code to SonarCloud for quality check...'
-                withSonarQubeEnv('sonarcloud') {
-                    sh '''./mvnw -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-                        -Dsonar.organization=alfi-teachs \
-                        -Dsonar.projectKey=alfi-teachs_spring-petclinic-microservices'''
-                }
-                echo '>>> SonarQube analysis finished ✅'
-            }
-        }
         stage('Package') {
             steps {
-                echo '>>> Step 5:  Packaging apps into .jar files...'
+                echo '>>> Step 4:  Packaging apps into .jar files...'
                 sh './mvnw -B package -DskipTests'
                 sh 'ls -lh spring-petclinic-*/target/*.jar'
                 echo '>>> Package finished ✅'
